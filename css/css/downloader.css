@@ -1,0 +1,369 @@
+/* === GLOBAL RESET === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* === BODY === */
+body {
+  background-color: #f8fafc;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #444;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* === UTILITY CLASSES (Added) === */
+/* These classes are necessary for the icon/link alignment in the table rows */
+.d-flex {
+    display: flex;
+}
+.align-items-center {
+    align-items: center;
+}
+.me-2 {
+    margin-right: 8px; /* Margin End (Right) */
+}
+.text-center {
+    text-align: center !important;
+}
+
+/* === HEADER === */
+.main-header {
+  background: linear-gradient(90deg, #0d6efd, #0b5ed7);
+  color: #fff;
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo-area h1 {
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.user-nav a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 25px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.user-nav a:hover {
+  color: #dbe9ff;
+  transform: translateY(-1px);
+}
+
+.btn-logout {
+  background-color: #dc3545;
+  padding: 8px 15px;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn-logout:hover {
+  background-color: #bb2d3b;
+  transform: translateY(-1px);
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+}
+
+/* === MAIN LAYOUT === */
+.dashboard-main-content {
+  display: flex;
+  flex: 1;
+  min-height: calc(100vh - 60px);
+}
+
+/* === SIDEBAR === */
+.sidebar {
+  width: 250px;
+  background-color: #ffffff;
+  padding: 30px 20px;
+  border-right: 1px solid #e9ecef;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
+}
+
+.role-title {
+  color: #0d6efd;
+  font-size: 1.25rem;
+  font-weight: 700;
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 10px;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.role-nav a {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  text-decoration: none;
+  color: #495057;
+  border-radius: 10px;
+  transition: all 0.25s ease;
+  font-weight: 500;
+  background-color: transparent;
+}
+
+.role-nav a:hover {
+  background-color: #eaf3ff;
+  color: #0d6efd;
+  transform: translateX(4px);
+}
+
+.active-link {
+  background-color: #e9f3ff;
+  color: #0d6efd;
+  font-weight: 700;
+  border-left: 4px solid #0d6efd;
+  padding-left: 12px;
+}
+
+.badge {
+  background-color: #dc3545;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  margin-left: auto;
+}
+
+.admin-link {
+  border-top: 1px solid #dee2e6;
+  margin-top: 25px;
+  padding-top: 15px;
+  color: #dc3545 !important;
+}
+
+/* === CONTENT AREA === */
+.content-area {
+  flex-grow: 1;
+  padding: 40px 50px;
+  background-color: #f8fafc;
+}
+
+#page-title {
+  color: #212529;
+  font-size: 1.9rem;
+  font-weight: 700;
+  border-bottom: 3px solid #0d6efd;
+  padding-bottom: 10px;
+  margin-bottom: 35px;
+}
+
+/* === BUTTONS === */
+.btn {
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 12px;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-accept {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-accept:hover {
+  background-color: #218838;
+}
+
+.btn-decline {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-decline:hover {
+  background-color: #c82333;
+}
+
+.btn-message {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.btn-message:hover {
+  background-color: #0b5ed7;
+}
+
+.btn-small {
+  padding: 6px 10px;
+  font-size: 0.85rem;
+}
+
+/* --- NOTES TABLE SPECIFIC STYLES --- */
+
+/* Search Input Styling */
+.search-bar-container {
+    margin-bottom: 25px;
+}
+.search-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ced4da; /* Consistent border color */
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.2s;
+}
+.search-input:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    outline: none;
+}
+
+/* Info Message */
+.info-message {
+    font-size: 0.85rem;
+    color: #6c757d;
+    padding: 10px 0;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Home Button */
+.nav-home-btn {
+    padding: 8px 12px;
+    font-size: 1.1rem;
+    background-color: #f0f0f0;
+    color: #495057;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+.nav-home-btn:hover {
+    background-color: #e2e6ea;
+}
+
+/* Table Styling */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.notes-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+}
+
+.notes-table thead tr {
+  background-color: #e9f3ff; /* Lighter shade of primary background */
+  color: #0d6efd;
+  font-weight: 600;
+}
+
+.notes-table th,
+.notes-table td {
+    padding: 15px;
+    border-bottom: 1px solid #dee2e6;
+    text-align: left;
+}
+
+.notes-table tbody tr:hover {
+    background-color: #f6faff;
+}
+
+/* Name column specifics */
+.cell-name {
+    font-weight: 500;
+}
+.cell-name .icon {
+    font-size: 1.1rem;
+    color: #999; /* Icon color */
+}
+.cell-name .text-primary {
+    color: #0d6efd; /* Standard link color */
+}
+/* Style for the name in the highlighted row */
+.notes-table .highlight-row .text-primary-highlight {
+    color: #0b5ed7; /* Slightly darker primary blue */
+    font-weight: 600;
+}
+
+/* --- Link Styling for Table Cells --- */
+.table-link {
+    text-decoration: none; /* Remove underline by default */
+    transition: text-decoration 0.2s;
+}
+
+.table-link:hover {
+    text-decoration: underline; /* Add underline on hover */
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .dashboard-main-content {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .content-area {
+    padding: 25px 20px;
+  }
+
+  /* Note: Assuming these summary/request styles are for other pages,
+     but keeping them for completeness */
+  .summary-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .request-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .request-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+  }
+
+  /* Make table scrollable horizontally on small screens */
+  .mentee-table,
+  .notes-table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .user-nav {
+    display: none;
+  }
+}
