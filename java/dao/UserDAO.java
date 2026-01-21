@@ -1,7 +1,10 @@
 package dao;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import model.User;
+import model.Profession; // Ensure you import your Profession model
 import utils.DBConnection;
 
 public class UserDAO {
@@ -11,7 +14,6 @@ public class UserDAO {
         User user = null;
         String sql = "";
 
-        // Select table based on role
         if ("admin".equals(role)) {
             sql = "SELECT * FROM admin WHERE email = ? AND password = ?";
         } else if ("mentor".equals(role)) {
@@ -19,7 +21,7 @@ public class UserDAO {
         } else if ("mentee".equals(role)) {
             sql = "SELECT * FROM mentee WHERE email = ? AND password = ?";
         } else {
-            return null; // Invalid role
+            return null;
         }
 
         try (Connection conn = DBConnection.getConnection();
@@ -41,7 +43,6 @@ public class UserDAO {
                         user.setId(rs.getInt("adminID"));
                     } else if ("mentor".equals(role)) {
                         user.setId(rs.getInt("mentorID"));
-                        // Map Mentor Specifics
                         user.setAddress(rs.getString("address"));
                         user.setDateOfBirth(rs.getDate("dateOfBirth"));
                         user.setEducationalLevel(rs.getString("educationalLevel"));
@@ -52,7 +53,6 @@ public class UserDAO {
                         user.setBio(rs.getString("bio"));
                     } else {
                         user.setId(rs.getInt("menteeID"));
-                        // Map Mentee Specifics
                         user.setAddress(rs.getString("address"));
                         user.setDateOfBirth(rs.getDate("dateOfBirth"));
                         user.setEducationalLevel(rs.getString("educationalLevel"));
@@ -71,7 +71,7 @@ public class UserDAO {
         return user;
     }
 
-    //  2. EMAIL CHECK LOGIC  //
+    //  2. VALIDATION LOGIC  //
     public boolean isEmailRegistered(String email, String role) {
         String sql = "SELECT 1 FROM " + role + " WHERE email = ?"; 
         
@@ -80,7 +80,7 @@ public class UserDAO {
             
             ps.setString(1, email);
             try (ResultSet rs = ps.executeQuery()) {
-                return rs.next(); // Returns true if email exists
+                return rs.next();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,7 +89,6 @@ public class UserDAO {
     }
 
     //  3. REGISTRATION LOGIC  //
-    
     public boolean registerMentor(User u) {
         String sql = "INSERT INTO mentor (name, email, password, noPhone, address, dateOfBirth, " +
                      "educationalLevel, masteredSubjects, yearsExperience, department, qualification, bio) " +
@@ -105,7 +104,7 @@ public class UserDAO {
             ps.setString(5, u.getAddress());
             ps.setDate(6, u.getDateOfBirth());
             ps.setString(7, u.getEducationalLevel());
-            ps.setString(8, ""); // masteredSubjects default empty
+            ps.setString(8, ""); 
             
             if (u.getYearsExperience() != null) ps.setInt(9, u.getYearsExperience()); 
             else ps.setNull(9, Types.INTEGER);
@@ -137,12 +136,12 @@ public class UserDAO {
             ps.setString(5, u.getAddress());
             ps.setDate(6, u.getDateOfBirth());
             ps.setString(7, u.getEducationalLevel());
-            ps.setString(8, ""); // subjectsToLearn default empty
+            ps.setString(8, ""); 
             ps.setString(9, u.getStudentId());
-            ps.setString(10, ""); // currentYear default empty
+            ps.setString(10, ""); 
             ps.setString(11, u.getProgram()); 
-            ps.setString(12, ""); // learningGoals
-            ps.setString(13, ""); // availability
+            ps.setString(12, ""); 
+            ps.setString(13, ""); 
 
             return ps.executeUpdate() > 0;
 
@@ -150,5 +149,42 @@ public class UserDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    //  4. DROPDOWN DATA  //
+    
+    public List<Profession> getAllProfessions() {
+        List<Profession> list = new ArrayList<>();
+        // Using Statement here is fine since there are no parameters
+        try (Connection conn = DBConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM PROFESSION ORDER BY PROFESSIONNAME")) {
+            
+            while (rs.next()) {
+                Profession p = new Profession();
+                p.setProfessionID(rs.getInt("PROFESSIONID"));
+                p.setProfessionName(rs.getString("PROFESSIONNAME"));
+                p.setCategory(rs.getString("CATEGORY"));
+                list.add(p);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<String> getAllDepartments() {
+        List<String> list = new ArrayList<>();
+        try (Connection conn = DBConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM DEPARTMENT ORDER BY DEPT_NAME")) {
+            
+            while (rs.next()) {
+                list.add(rs.getString("DEPT_NAME"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }
