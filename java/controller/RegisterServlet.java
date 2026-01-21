@@ -4,13 +4,11 @@ import dao.UserDAO;
 import model.User;
 import model.Profession; 
 import java.io.IOException;
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Date; // Only SQL import needed (for Date conversion)
 import java.util.List;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
-import utils.DBConnection; // Only used for GET method (loading form options)
 
 @WebServlet(name = "RegisterServlet", urlPatterns = {"/RegisterServlet"})
 public class RegisterServlet extends HttpServlet {
@@ -19,41 +17,23 @@ public class RegisterServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-
-        Connection conn = null;
+        UserDAO userDAO = new UserDAO();
+        
         try {
-            conn = DBConnection.getConnection();
-            Statement stmt = conn.createStatement();
-
-            // 1. Fetch Professions
-            ResultSet rsProf = stmt.executeQuery("SELECT * FROM PROFESSION ORDER BY PROFESSIONNAME");
-            List<Profession> professionList = new ArrayList<>();
-            while(rsProf.next()){
-                Profession p = new Profession();
-                p.setProfessionID(rsProf.getInt("PROFESSIONID"));
-                p.setProfessionName(rsProf.getString("PROFESSIONNAME"));
-                p.setCategory(rsProf.getString("CATEGORY")); 
-                professionList.add(p);
-            }
-            rsProf.close();
-
-            // 2. Fetch Departments
-            ResultSet rsDept = stmt.executeQuery("SELECT * FROM DEPARTMENT ORDER BY DEPT_NAME");
-            List<String> departmentList = new ArrayList<>();
-            while(rsDept.next()){
-                departmentList.add(rsDept.getString("DEPT_NAME"));
-            }
-            rsDept.close();
+            // 1. Fetch Data using DAO methods
+            List<Profession> professionList = userDAO.getAllProfessions();
+            List<String> departmentList = userDAO.getAllDepartments();
             
+            // 2. Attach to Request
             request.setAttribute("professionList", professionList);
             request.setAttribute("departmentList", departmentList);
             
+            // 3. Forward to View
             request.getRequestDispatcher("register.jsp").forward(request, response);
-
+            
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            try { if (conn != null) conn.close(); } catch (Exception e) {}
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error loading form data.");
         }
     }
 
@@ -117,7 +97,6 @@ public class RegisterServlet extends HttpServlet {
 
         } else if ("mentee".equals(role)) {
             newUser.setStudentId(request.getParameter("studentId"));
-            // Mentee uses 'department' dropdown to fill 'program' column
             newUser.setProgram(request.getParameter("department")); 
             
             isRegistered = userDAO.registerMentee(newUser);
